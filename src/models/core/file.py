@@ -558,9 +558,9 @@ def _get_folder_path(file_path: str, success_folder: str, json_data: JsonData) -
             return folder_path
         elif "bc" in config.update_mode:
             folder_name = config.update_b_folder
-            success_folder = split_path(folder_path)[0]
+            # success_folder = split_path(folder_path)[0]
             if "a" in config.update_mode:
-                success_folder = split_path(success_folder)[0]
+                # success_folder = split_path(success_folder)[0]
                 folder_name = os.path.join(config.update_a_folder, config.update_b_folder).replace("\\", "/").strip("/")
         elif config.update_mode == "d":
             folder_name = config.update_d_folder
@@ -1681,15 +1681,19 @@ def deal_old_files(
     # 图片旧路径转换路径
     poster_old_path_with_filename = file_path.replace(file_ex, "-poster.jpg")
     thumb_old_path_with_filename = file_path.replace(file_ex, "-thumb.jpg")
+    landscape_old_path_with_filename = file_path.replace(file_ex, "-landscape.jpg")
     fanart_old_path_with_filename = file_path.replace(file_ex, "-fanart.jpg")
     poster_old_path_no_filename = convert_path(os.path.join(folder_old_path, "poster.jpg"))
     thumb_old_path_no_filename = convert_path(os.path.join(folder_old_path, "thumb.jpg"))
+    landscape_old_path_no_filename = convert_path(os.path.join(folder_old_path, "landscape.jpg"))
     fanart_old_path_no_filename = convert_path(os.path.join(folder_old_path, "fanart.jpg"))
     file_path_list = {
         nfo_old_path,
         nfo_new_path,
         thumb_old_path_with_filename,
         thumb_old_path_no_filename,
+        landscape_old_path_with_filename,
+        landscape_old_path_no_filename,
         thumb_new_path_with_filename,
         thumb_final_path,
         poster_old_path_with_filename,
@@ -1837,6 +1841,10 @@ def deal_old_files(
             move_file(thumb_old_path_with_filename, thumb_final_path)
         elif thumb_old_path_no_filename != thumb_final_path and os.path.exists(thumb_old_path_no_filename):
             move_file(thumb_old_path_no_filename, thumb_final_path)
+        elif landscape_old_path_with_filename != thumb_final_path and os.path.exists(landscape_old_path_with_filename):
+            move_file(landscape_old_path_with_filename, thumb_final_path)
+        elif landscape_old_path_no_filename != thumb_final_path and os.path.exists(landscape_old_path_no_filename):
+            move_file(landscape_old_path_no_filename, thumb_final_path)
         else:
             thumb_exists = False
 
@@ -1851,6 +1859,14 @@ def deal_old_files(
                 thumb_old_path_no_filename
             ):
                 delete_file(thumb_old_path_no_filename)
+            if landscape_old_path_with_filename.lower() != thumb_final_path.lower() and os.path.exists(
+                landscape_old_path_with_filename
+            ):
+                delete_file(landscape_old_path_with_filename)
+            if landscape_old_path_no_filename.lower() != thumb_final_path.lower() and os.path.exists(
+                landscape_old_path_no_filename
+            ):
+                delete_file(landscape_old_path_no_filename)
             if thumb_new_path_with_filename.lower() != thumb_final_path.lower() and os.path.exists(
                 thumb_new_path_with_filename
             ):
